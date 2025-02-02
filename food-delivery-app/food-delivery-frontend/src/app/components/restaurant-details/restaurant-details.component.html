@@ -1,0 +1,32 @@
+<h2>{{ restaurant?.name }}</h2>
+<p>Location: {{ restaurant?.location }}</p>
+<p>Rating: {{ restaurant?.rating }}</p>
+
+<h3>Menu</h3>
+
+<div *ngIf="dishes.length > 0; else noDishes">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Dish</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let dish of dishes">
+                <td>{{ dish.name }}</td>
+                <td>${{ dish.price?.toFixed(2) }}</td>
+                <td>
+                    <button (click)="addToCart(dish)" class="btn btn-primary">Add to Cart</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<ng-template #noDishes>
+    <p>❌ No dishes available for this restaurant.</p>
+</ng-template>
+
+<button (click)="goToCart()" class="btn btn-success">Go to Cart (Checkout)</button>

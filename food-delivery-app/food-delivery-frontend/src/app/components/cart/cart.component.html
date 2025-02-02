@@ -1,0 +1,32 @@
+<h2>Your Basket</h2>
+
+<div *ngIf="cart.length === 0">
+    <p>Your cart is empty.</p>
+    <a routerLink="/restaurants" class="btn btn-secondary">Browse Restaurants</a>
+</div>
+
+<table *ngIf="cart.length > 0" class="table">
+    <thead>
+        <tr>
+            <th>Dish</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of cart">
+            <td>{{ item.name }}</td>
+            <td>${{ item.price.toFixed(2) }}</td>
+            <td>
+                <input type="number" [(ngModel)]="item.quantity" min="1"
+                    (change)="updateQuantity(item, item.quantity)" />
+            </td>
+            <td>
+                <button (click)="removeFromCart(item)" class="btn btn-danger">Remove</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<button (click)="proceedToCheckout()" class="btn btn-success">Proceed to Checkout</button>

@@ -1,0 +1,10 @@
+<h2>Dishes</h2>
+
+<div *ngIf="dishes.length === 0">
+    <p>No dishes available. Please add some dishes to the database.</p>
+</div>
+
+<div *ngFor="let dish of dishes" class="card p-3 mb-2">
+    <h3>{{ dish.name }}</h3>
+    <p>Price: ${{ dish.price }}</p>
+</div>

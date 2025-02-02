@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    environment {
+        GIT_REPO = "https://github.com/ah682/food-delivery-app.git"  // ✅ GitHub repository
+        PROJECT_PATH = "food-delivery-app"  // ✅ Path where the repo is cloned
+    }
+
+    stages {
+        stage('Checkout Repository') {
+            steps {
+                sh "rm -rf ${PROJECT_PATH}"  // ✅ Ensure clean clone
+                sh "git clone ${GIT_REPO}"
+            }
+        }
+
+        stage('Build Backend') {
+            steps {
+                dir("${PROJECT_PATH}/backend") { // ✅ Use the cloned repo path
+                    sh 'mvn clean package -DskipTests'
+                }
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                dir("${PROJECT_PATH}") {  // ✅ Use the cloned repo path
+                    sh 'docker-compose build'
+                }
+            }
+        }
+
+        stage('Start Containers') {
+            steps {
+                dir("${PROJECT_PATH}") {  // ✅ Use the cloned repo path
+                    sh 'docker-compose up -d'
+                }
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                sh 'docker system prune -f'
+            }
+        }
+    }
+}
